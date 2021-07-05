@@ -54,6 +54,21 @@ class Ticket
      */
     private $message;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=TicketType::class, inversedBy="tickets")
+     */
+    private $type;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TicketGravity::class, inversedBy="tickets")
+     */
+    private $gravity;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TicketStatus::class, inversedBy="tickets")
+     */
+    private $status;
+
     public function __construct()
     {
         $this->beneficiairy = new ArrayCollection();
@@ -181,6 +196,42 @@ class Ticket
                 $message->setTicket(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getType(): ?TicketType
+    {
+        return $this->type;
+    }
+
+    public function setType(?TicketType $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getGravity(): ?TicketGravity
+    {
+        return $this->gravity;
+    }
+
+    public function setGravity(?TicketGravity $gravity): self
+    {
+        $this->gravity = $gravity;
+
+        return $this;
+    }
+
+    public function getStatus(): ?TicketStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?TicketStatus $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
