@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TicketRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,6 +38,21 @@ class Ticket
      * @ORM\Column(type="date", nullable=true)
      */
     private $Incident_date;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="tickets")
+     */
+    private $service;
+
+    /**
+     * @ORM\OneToMany(targetEntity=TicketBeneficiairy::class, mappedBy="ticket")
+     */
+    private $beneficiairy;
+
+    public function __construct()
+    {
+        $this->beneficiairy = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -86,6 +103,48 @@ class Ticket
     public function setIncidentDate(?\DateTimeInterface $Incident_date): self
     {
         $this->Incident_date = $Incident_date;
+
+        return $this;
+    }
+
+    public function getService(): ?Service
+    {
+        return $this->service;
+    }
+
+    public function setService(?Service $service): self
+    {
+        $this->service = $service;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TicketBeneficiairy[]
+     */
+    public function getBeneficiairy(): Collection
+    {
+        return $this->beneficiairy;
+    }
+
+    public function addBeneficiairy(TicketBeneficiairy $beneficiairy): self
+    {
+        if (!$this->beneficiairy->contains($beneficiairy)) {
+            $this->beneficiairy[] = $beneficiairy;
+            $beneficiairy->setTicket($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBeneficiairy(TicketBeneficiairy $beneficiairy): self
+    {
+        if ($this->beneficiairy->removeElement($beneficiairy)) {
+            // set the owning side to null (unless already changed)
+            if ($beneficiairy->getTicket() === $this) {
+                $beneficiairy->setTicket(null);
+            }
+        }
 
         return $this;
     }

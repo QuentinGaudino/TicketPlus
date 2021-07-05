@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -51,6 +53,22 @@ class User
      * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="users")
      */
     private $service;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=UserCategory::class, inversedBy="users")
+     */
+    private $category;
+
+    /**
+     * @ORM\OneToMany(targetEntity=TicketBeneficiairy::class, mappedBy="user")
+     */
+    private $beneficiairy;
+
+    public function __construct()
+    {
+        $this->category = new ArrayCollection();
+        $this->beneficiairy = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -137,6 +155,60 @@ class User
     public function setService(?Service $service): self
     {
         $this->service = $service;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserCategory[]
+     */
+    public function getCategory(): Collection
+    {
+        return $this->category;
+    }
+
+    public function addCategory(UserCategory $category): self
+    {
+        if (!$this->category->contains($category)) {
+            $this->category[] = $category;
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(UserCategory $category): self
+    {
+        $this->category->removeElement($category);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TicketBeneficiairy[]
+     */
+    public function getBeneficiairy(): Collection
+    {
+        return $this->beneficiairy;
+    }
+
+    public function addBeneficiairy(TicketBeneficiairy $beneficiairy): self
+    {
+        if (!$this->beneficiairy->contains($beneficiairy)) {
+            $this->beneficiairy[] = $beneficiairy;
+            $beneficiairy->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBeneficiairy(TicketBeneficiairy $beneficiairy): self
+    {
+        if ($this->beneficiairy->removeElement($beneficiairy)) {
+            // set the owning side to null (unless already changed)
+            if ($beneficiairy->getUser() === $this) {
+                $beneficiairy->setUser(null);
+            }
+        }
 
         return $this;
     }
