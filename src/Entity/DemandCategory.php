@@ -34,9 +34,15 @@ class DemandCategory
      */
     private $parentName;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Ticket::class, mappedBy="demandCategory")
+     */
+    private $tickets;
+
     public function __construct()
     {
         $this->parentName = new ArrayCollection();
+        $this->tickets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -96,6 +102,36 @@ class DemandCategory
             // set the owning side to null (unless already changed)
             if ($parentName->getParentName() === $this) {
                 $parentName->setParentName(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ticket[]
+     */
+    public function getTickets(): Collection
+    {
+        return $this->tickets;
+    }
+
+    public function addTicket(Ticket $ticket): self
+    {
+        if (!$this->tickets->contains($ticket)) {
+            $this->tickets[] = $ticket;
+            $ticket->setDemandCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicket(Ticket $ticket): self
+    {
+        if ($this->tickets->removeElement($ticket)) {
+            // set the owning side to null (unless already changed)
+            if ($ticket->getDemandCategory() === $this) {
+                $ticket->setDemandCategory(null);
             }
         }
 

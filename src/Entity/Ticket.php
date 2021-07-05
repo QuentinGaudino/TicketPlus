@@ -69,6 +69,16 @@ class Ticket
      */
     private $status;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=IncidentCategory::class, inversedBy="demandCategory")
+     */
+    private $incidentCategory;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=DemandCategory::class, inversedBy="tickets")
+     */
+    private $demandCategory;
+
     public function __construct()
     {
         $this->beneficiairy = new ArrayCollection();
@@ -232,6 +242,30 @@ class Ticket
     public function setStatus(?TicketStatus $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getIncidentCategory(): ?IncidentCategory
+    {
+        return $this->incidentCategory;
+    }
+
+    public function setIncidentCategory(?IncidentCategory $incidentCategory): self
+    {
+        $this->incidentCategory = $incidentCategory;
+
+        return $this;
+    }
+
+    public function getDemandCategory(): ?DemandCategory
+    {
+        return $this->demandCategory;
+    }
+
+    public function setDemandCategory(?DemandCategory $demandCategory): self
+    {
+        $this->demandCategory = $demandCategory;
 
         return $this;
     }
