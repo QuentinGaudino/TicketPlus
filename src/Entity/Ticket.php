@@ -49,9 +49,15 @@ class Ticket
      */
     private $beneficiairy;
 
+    /**
+     * @ORM\OneToMany(targetEntity=TicketMessage::class, mappedBy="ticket")
+     */
+    private $message;
+
     public function __construct()
     {
         $this->beneficiairy = new ArrayCollection();
+        $this->message = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -143,6 +149,36 @@ class Ticket
             // set the owning side to null (unless already changed)
             if ($beneficiairy->getTicket() === $this) {
                 $beneficiairy->setTicket(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TicketMessage[]
+     */
+    public function getMessage(): Collection
+    {
+        return $this->message;
+    }
+
+    public function addMessage(TicketMessage $message): self
+    {
+        if (!$this->message->contains($message)) {
+            $this->message[] = $message;
+            $message->setTicket($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(TicketMessage $message): self
+    {
+        if ($this->message->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getTicket() === $this) {
+                $message->setTicket(null);
             }
         }
 

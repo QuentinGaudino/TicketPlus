@@ -64,10 +64,16 @@ class User
      */
     private $beneficiairy;
 
+    /**
+     * @ORM\OneToMany(targetEntity=TicketMessage::class, mappedBy="user")
+     */
+    private $message;
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
         $this->beneficiairy = new ArrayCollection();
+        $this->message = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -207,6 +213,36 @@ class User
             // set the owning side to null (unless already changed)
             if ($beneficiairy->getUser() === $this) {
                 $beneficiairy->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TicketMessage[]
+     */
+    public function getMessage(): Collection
+    {
+        return $this->message;
+    }
+
+    public function addMessage(TicketMessage $message): self
+    {
+        if (!$this->message->contains($message)) {
+            $this->message[] = $message;
+            $message->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(TicketMessage $message): self
+    {
+        if ($this->message->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getUser() === $this) {
+                $message->setUser(null);
             }
         }
 
