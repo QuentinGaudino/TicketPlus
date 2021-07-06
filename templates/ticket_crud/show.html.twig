@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ticket{% endblock %}
+
+{% block body %}
+    <h1>Ticket</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ticket.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ ticket.Name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ ticket.Description }}</td>
+            </tr>
+            <tr>
+                <th>Creation_date</th>
+                <td>{{ ticket.CreationDate ? ticket.CreationDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Incident_date</th>
+                <td>{{ ticket.IncidentDate ? ticket.IncidentDate|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('ticket_crud_index') }}">back to list</a>
+
+    <a href="{{ path('ticket_crud_edit', {'id': ticket.id}) }}">edit</a>
+
+    {{ include('ticket_crud/_delete_form.html.twig') }}
+{% endblock %}
