@@ -58,11 +58,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $avatarLink;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="users")
-     */
-    private $service;
-
-    /**
      * @ORM\OneToMany(targetEntity=TicketBeneficiairy::class, mappedBy="user")
      */
     private $beneficiairy;
@@ -72,10 +67,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $message;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Ticket::class, mappedBy="author")
+     */
+    private $tickets;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Ticket::class, mappedBy="support_technician_assign")
+     */
+    private $tickets_assign;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="users")
+     */
+    private $service;
+
     public function __construct()
     {
         $this->beneficiairy = new ArrayCollection();
         $this->message = new ArrayCollection();
+        $this->tickets = new ArrayCollection();
+        $this->tickets_assign = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -215,18 +227,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getService(): ?Service
-    {
-        return $this->service;
-    }
-
-    public function setService(?Service $service): self
-    {
-        $this->service = $service;
-
-        return $this;
-    }
-
     /**
      * @return Collection|TicketBeneficiairy[]
      */
@@ -283,6 +283,78 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $message->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ticket[]
+     */
+    public function getTickets(): Collection
+    {
+        return $this->tickets;
+    }
+
+    public function addTicket(Ticket $ticket): self
+    {
+        if (!$this->tickets->contains($ticket)) {
+            $this->tickets[] = $ticket;
+            $ticket->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicket(Ticket $ticket): self
+    {
+        if ($this->tickets->removeElement($ticket)) {
+            // set the owning side to null (unless already changed)
+            if ($ticket->getAuthor() === $this) {
+                $ticket->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ticket[]
+     */
+    public function getTicketsAssign(): Collection
+    {
+        return $this->tickets_assign;
+    }
+
+    public function addTicketsAssign(Ticket $ticketsAssign): self
+    {
+        if (!$this->tickets_assign->contains($ticketsAssign)) {
+            $this->tickets_assign[] = $ticketsAssign;
+            $ticketsAssign->setSupportTechnicianAssign($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicketsAssign(Ticket $ticketsAssign): self
+    {
+        if ($this->tickets_assign->removeElement($ticketsAssign)) {
+            // set the owning side to null (unless already changed)
+            if ($ticketsAssign->getSupportTechnicianAssign() === $this) {
+                $ticketsAssign->setSupportTechnicianAssign(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getService(): ?Service
+    {
+        return $this->service;
+    }
+
+    public function setService(?Service $service): self
+    {
+        $this->service = $service;
 
         return $this;
     }

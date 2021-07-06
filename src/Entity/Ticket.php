@@ -40,11 +40,6 @@ class Ticket
     private $Incident_date;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="tickets")
-     */
-    private $service;
-
-    /**
      * @ORM\OneToMany(targetEntity=TicketBeneficiairy::class, mappedBy="ticket")
      */
     private $beneficiairy;
@@ -78,6 +73,22 @@ class Ticket
      * @ORM\ManyToOne(targetEntity=DemandCategory::class, inversedBy="tickets")
      */
     private $demandCategory;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tickets")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tickets_assign")
+     */
+    private $support_technician_assign;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="tickets_assign")
+     */
+    private $support_assign;
 
     public function __construct()
     {
@@ -134,18 +145,6 @@ class Ticket
     public function setIncidentDate(?\DateTimeInterface $Incident_date): self
     {
         $this->Incident_date = $Incident_date;
-
-        return $this;
-    }
-
-    public function getService(): ?Service
-    {
-        return $this->service;
-    }
-
-    public function setService(?Service $service): self
-    {
-        $this->service = $service;
 
         return $this;
     }
@@ -266,6 +265,42 @@ class Ticket
     public function setDemandCategory(?DemandCategory $demandCategory): self
     {
         $this->demandCategory = $demandCategory;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getSupportTechnicianAssign(): ?User
+    {
+        return $this->support_technician_assign;
+    }
+
+    public function setSupportTechnicianAssign(?User $support_technician_assign): self
+    {
+        $this->support_technician_assign = $support_technician_assign;
+
+        return $this;
+    }
+
+    public function getSupportAssign(): ?Service
+    {
+        return $this->support_assign;
+    }
+
+    public function setSupportAssign(?Service $support_assign): self
+    {
+        $this->support_assign = $support_assign;
 
         return $this;
     }

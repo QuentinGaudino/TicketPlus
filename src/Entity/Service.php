@@ -30,14 +30,14 @@ class Service
     private $users;
 
     /**
-     * @ORM\OneToMany(targetEntity=Ticket::class, mappedBy="service")
+     * @ORM\OneToMany(targetEntity=Ticket::class, mappedBy="support_assign")
      */
-    private $tickets;
+    private $tickets_assign;
 
     public function __construct()
     {
         $this->users = new ArrayCollection();
-        $this->tickets = new ArrayCollection();
+        $this->tickets_assign = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -90,27 +90,27 @@ class Service
     /**
      * @return Collection|Ticket[]
      */
-    public function getTickets(): Collection
+    public function getTicketsAssign(): Collection
     {
-        return $this->tickets;
+        return $this->tickets_assign;
     }
 
-    public function addTicket(Ticket $ticket): self
+    public function addTicketsAssign(Ticket $ticketsAssign): self
     {
-        if (!$this->tickets->contains($ticket)) {
-            $this->tickets[] = $ticket;
-            $ticket->setService($this);
+        if (!$this->tickets_assign->contains($ticketsAssign)) {
+            $this->tickets_assign[] = $ticketsAssign;
+            $ticketsAssign->setSupportAssign($this);
         }
 
         return $this;
     }
 
-    public function removeTicket(Ticket $ticket): self
+    public function removeTicketsAssign(Ticket $ticketsAssign): self
     {
-        if ($this->tickets->removeElement($ticket)) {
+        if ($this->tickets_assign->removeElement($ticketsAssign)) {
             // set the owning side to null (unless already changed)
-            if ($ticket->getService() === $this) {
-                $ticket->setService(null);
+            if ($ticketsAssign->getSupportAssign() === $this) {
+                $ticketsAssign->setSupportAssign(null);
             }
         }
 
