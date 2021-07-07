@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Ticket{% endblock %}
+
+{% block body %}
+    <h1>Quel type de ticket voulez-vous ouvrir?</h1>
+
+    <ul>
+        <li>
+            <p>J’ai besoin d’être habilité à un outil, d’avoir un compte, d’être doté de matériel ou j’ai simplement une question.</p>
+            <a href="{{ path('ticket_crud_new_demand') }}">Faire une demande</a>
+        </li>
+        <li>
+            <p>J’ai besoin d’un dépannage, mon ordinateur ne fonctionne plus correctement ou déclarer tout autre incident</p>
+            <a href="{{ path('ticket_crud_new_incident') }}">Déclarer un incident</a>
+        </li>
+    </ul>
+
+    <a href="{{ path('accueil_front') }}">Retour à l'accueil</a>
+{% endblock %}
