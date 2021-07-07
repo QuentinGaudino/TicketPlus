@@ -19,6 +19,11 @@
             <li>Les notifs</li>
             <li>L'utilsateur</li>
         </ul>
+        <a href="{{ path('ticket_crud_new_demand') }}">Nouvelle demande</a>
+        <a href="{{ path('ticket_crud_new_incident') }}">Nouvel incident</a>
+        <a href="{{ path('ticket_crud_all_incidents') }}">Tout les incidents</a>
+        <a href="{{ path('ticket_crud_my_tickets', {slug: 1}) }}">Mes demandes</a>
+        <a href="{{ path('ticket_crud_my_tickets', {slug: 2}) }}">Mes incidents</a>
     </header>
     <body>
         {% block body %}{% endblock %}

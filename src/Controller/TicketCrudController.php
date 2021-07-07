@@ -9,6 +9,8 @@ use App\Entity\User;
 use App\Form\TicketTypeDemand;
 use App\Form\TicketTypeIncident;
 use App\Repository\TicketRepository;
+use App\Repository\TicketStatusRepository;
+use App\Repository\TicketTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,15 +43,49 @@ class TicketCrudController extends AbstractController
     }
 
     /**
-     * @Route("/myTickets", name="ticket_crud_my_tickets", methods={"GET"})
+     * @Route("/myTickets/{slug}", name="ticket_crud_my_tickets", methods={"GET"}, requirements={"id" = "\d+"})
      */
-    public function myTickets(TicketRepository $ticketRepository): Response
+    //L'id est ici optionnel grace au requirement, le slug doit néanmoins avoir une valeur même si il n'est pas renseignégit
+    public function myTickets(TicketRepository $ticketRepository, TicketTypeRepository $ticketTypeRepository,int $slug=null): Response
     {
         $user = $this->security->getUser();
+
+        if ($slug == 1) {
+            $typeDemand = $ticketTypeRepository->findOneBy(['name' => 'demand' ]);
+            return $this->render('ticket_crud/index.html.twig', [
+                'tickets' => $ticketRepository->findBy(
+                    ['author' => $user, 'type' => $typeDemand ]
+                ),
+            ]);
+        }
+        if ($slug == 2) {
+            $typeIncident = $ticketTypeRepository->findOneBy(['name' => 'incident' ]);
+            return $this->render('ticket_crud/index.html.twig', [
+                'tickets' => $ticketRepository->findBy(
+                    ['author' => $user, 'type' => $typeIncident]
+                ),
+            ]);
+        }
+        return $this->render('ticket_crud/index.html.twig', [
+            'tickets' => $ticketRepository->findBy(
+                ['author' => $user ],
+            ),
+        ]);
+    }
+    
+
+    /**
+     * @Route("/allIncidents", name="ticket_crud_all_incidents", methods={"GET"})
+     */
+    public function allIncidents(TicketTypeRepository $ticketTypeRepository, TicketRepository $ticketRepository): Response
+    {
+
+        //Cette requète permet d'aller chercher l'objet "type" dans la BDD
+        $type = $ticketTypeRepository->findOneBy(['name' => 'incident' ]);
         return $this->render('ticket_crud/index.html.twig', [
             
             'tickets' => $ticketRepository->findBy(
-                ['author' => $user ]
+                ['type' => $type ]
             ),
         ]);
     }
@@ -57,7 +93,7 @@ class TicketCrudController extends AbstractController
     /**
      * @Route("/newDemand", name="ticket_crud_new_demand", methods={"GET","POST"})
      */
-    public function newDemand(Request $request): Response
+    public function newDemand(Request $request, TicketTypeRepository $ticketTypeRepository, TicketStatusRepository $ticketStatusRepository): Response
     {
         $ticket = new Ticket();
         $form = $this->createForm(TicketTypeDemand::class, $ticket);
@@ -65,10 +101,12 @@ class TicketCrudController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $type = new TicketType();
-            $type->setName('demand');
-            $status = new TicketStatus();
-            $status->setName('open');
+            $type = $ticketTypeRepository->findOneBy(['name' => 'demand']);
+            // $type = new TicketType();
+            // $type->setName('demand');
+            $status = $ticketStatusRepository->findOneBy(['name' => 'open']);
+            // $status = new TicketStatus();
+            // $status->setName('open');
             $user = $this->security->getUser();
             $ticket->setAuthor($user);
             $ticket->setCreationDate(new \DateTime());
@@ -76,7 +114,7 @@ class TicketCrudController extends AbstractController
             $ticket->setStatus($status);
             
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($type);
+            // $entityManager->persist($type);
             $entityManager->persist($status);
             $entityManager->persist($ticket);
             $entityManager->flush();
@@ -93,18 +131,19 @@ class TicketCrudController extends AbstractController
     /**
      * @Route("/newIncident", name="ticket_crud_new_incident", methods={"GET","POST"})
      */
-    public function newIncident(Request $request): Response
+    public function newIncident(Request $request, TicketTypeRepository $ticketTypeRepository, TicketStatusRepository $ticketStatusRepository): Response
     {
         $ticket = new Ticket();
         $form = $this->createForm(TicketTypeIncident::class, $ticket);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $type = new TicketType();
-            $type->setName('incident');
-            $status = new TicketStatus();
-            $status->setName('open');
+            $type = $ticketTypeRepository->findOneBy(['name' => 'incident']);
+            $status = $ticketStatusRepository->findOneBy(['name' => 'open']);
+            // $type = new TicketType();
+            // $type->setName('incident');
+            // $status = new TicketStatus();
+            // $status->setName('open');
             $user = $this->security->getUser();
             $ticket->setAuthor($user);
             $ticket->setCreationDate(new \DateTime());
