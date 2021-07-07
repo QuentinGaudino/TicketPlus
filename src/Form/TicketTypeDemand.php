@@ -7,22 +7,17 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TicketType extends AbstractType
+class TicketTypeDemand extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder
             ->add('Name')
             ->add('Description')
-            ->add('Creation_date')
-            ->add('Incident_date')
-            ->add('type')
-            ->add('gravity')
-            ->add('status')
-            ->add('incidentCategory')
+            //Affiche toute les catégories en vrac, il faudra utiliser les Forms Events https://symfony.com/doc/current/form/dynamic_form_modification.html#form-events-submitted-data
             ->add('demandCategory')
-            ->add('author')
-            ->add('support_technician_assign')
             ->add('support_assign')
         ;
     }
