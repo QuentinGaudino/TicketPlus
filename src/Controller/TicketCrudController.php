@@ -7,17 +7,15 @@ use App\Entity\TicketStatus;
 use App\Entity\TicketType;
 use App\Entity\User;
 use App\Form\TicketTypeDemand;
+use App\Form\TicketTypeIncident;
 use App\Repository\TicketRepository;
-use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints\Date;
-use Symfony\Component\Validator\Constraints\DateTime as ConstraintsDateTime;
+
 
 /**
  * @Route("/ticket/crud")
@@ -31,6 +29,7 @@ class TicketCrudController extends AbstractController
     {
         $this->security = $security;
     }
+
     /**
      * @Route("/", name="ticket_crud_index", methods={"GET"})
      */
@@ -42,9 +41,23 @@ class TicketCrudController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="ticket_crud_new", methods={"GET","POST"})
+     * @Route("/myTickets", name="ticket_crud_my_tickets", methods={"GET"})
      */
-    public function new(Request $request): Response
+    public function myTickets(TicketRepository $ticketRepository): Response
+    {
+        $user = $this->security->getUser();
+        return $this->render('ticket_crud/index.html.twig', [
+            
+            'tickets' => $ticketRepository->findBy(
+                ['author' => $user ]
+            ),
+        ]);
+    }
+
+    /**
+     * @Route("/newDemand", name="ticket_crud_new_demand", methods={"GET","POST"})
+     */
+    public function newDemand(Request $request): Response
     {
         $ticket = new Ticket();
         $form = $this->createForm(TicketTypeDemand::class, $ticket);
@@ -68,7 +81,43 @@ class TicketCrudController extends AbstractController
             $entityManager->persist($ticket);
             $entityManager->flush();
 
-            return $this->redirectToRoute('ticket_crud_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('ticket_crud_my_tickets', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('ticket_crud/new.html.twig', [
+            'ticket' => $ticket,
+            'form' => $form,
+        ]);
+    }
+
+    /**
+     * @Route("/newIncident", name="ticket_crud_new_incident", methods={"GET","POST"})
+     */
+    public function newIncident(Request $request): Response
+    {
+        $ticket = new Ticket();
+        $form = $this->createForm(TicketTypeIncident::class, $ticket);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $type = new TicketType();
+            $type->setName('incident');
+            $status = new TicketStatus();
+            $status->setName('open');
+            $user = $this->security->getUser();
+            $ticket->setAuthor($user);
+            $ticket->setCreationDate(new \DateTime());
+            $ticket->setType($type);
+            $ticket->setStatus($status);
+            
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($type);
+            $entityManager->persist($status);
+            $entityManager->persist($ticket);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('ticket_crud_my_tickets', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('ticket_crud/new.html.twig', [

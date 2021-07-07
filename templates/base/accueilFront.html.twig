@@ -4,5 +4,6 @@
 
 {% block body %}
 <h1>Accueil du Front Office</h1>
-<a href=""></a>
+    <a href="{{ path('ticket_crud_new_demand') }}">Nouvelle demande</a>
+    <a href="{{ path('ticket_crud_new_incident') }}">Nouvel incident</a>
 {% endblock %}
