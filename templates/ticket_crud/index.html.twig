@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ticket index{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block body %}
-    <h1>Ticket index</h1>
+    <h1>{{ title }}</h1>
 
     <table class="table">
         <thead>
@@ -17,7 +17,10 @@
             </tr>
         </thead>
         <tbody>
-        {% include "ticket_crud/filter.html.twig" %}
+        {% if filtre %}
+            {% include "ticket_crud/filter.html.twig" %}
+        {% endif %}
+        
         {% for ticket in tickets %}
             <tr>
                 <td>{{ ticket.id }}</td>

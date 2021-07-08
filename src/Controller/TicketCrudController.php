@@ -42,7 +42,10 @@ class TicketCrudController extends AbstractController
     {
         return $this->render('ticket_crud/index.html.twig', [
             'tickets' => $ticketRepository->findAll(),
-        ]);
+            'filtre' => false,
+            'title' => "Tout les tickets"
+            ]
+        );
     }
 
     /**
@@ -56,7 +59,9 @@ class TicketCrudController extends AbstractController
         return $this->render('ticket_crud/index.html.twig', [
             'tickets' => $filteredTicket,
             'status'=> $this->allStatus,
-            'types' => $this->allTypes
+            'types' => $this->allTypes,
+            'filtre' => true,
+            'title' => 'Mes tickets'
         ]);
     }
     
@@ -76,7 +81,9 @@ class TicketCrudController extends AbstractController
                 ['type' => $type ]
             ),
             'status'=> $this->allStatus,
-            'types' => $this->allTypes
+            'types' => $this->allTypes,
+            'filtre' => false,
+            'title' => 'Tout les incidents'
         ]);
     }
 

@@ -15,10 +15,18 @@
     </head>
     <header>
         <ul>
-            <li>La date</li>
+            <li>
+                <script>
+                    const date = new Date();
+                    const options = {weekday: "long", year: "numeric", month: "long", day: "2-digit"};
+                    document.write(date.toLocaleDateString("fr-FR", options));
+                </script>
+            </li>
             <li>Les notifs</li>
             <li>L'utilsateur</li>
         </ul>
+        <a href="{{ path('accueil_front') }}">Acceuil Front</a>
+        <a href="{{ path('accueil_back') }}">Accueil Back</a>
         <a href="{{ path('ticket_crud_new_demand') }}">Nouvelle demande</a>
         <a href="{{ path('ticket_crud_new_incident') }}">Nouvel incident</a>
         <a href="{{ path('ticket_crud_all_incidents') }}">Tout les incidents</a>
@@ -26,6 +34,7 @@
         <a href="{{ path('ticket_crud_my_tickets', {'search':'', 'beginDate':'', 'endDate' :'', 'status':'open', 'type' : 'incident'}) }}">Mes incidents</a>
     </header>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+        {% endblock %}
     </body>
 </html>
