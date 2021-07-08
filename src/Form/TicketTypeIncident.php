@@ -9,7 +9,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TicketTypeIncident extends AbstractType
 {
-    //L'utilisation du constructeur avec Security me permet d'accéder à l'User depuis n'importe ou.
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

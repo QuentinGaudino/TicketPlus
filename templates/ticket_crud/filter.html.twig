@@ -1,0 +1,36 @@
+<form action="" method="get">
+    <div>
+        <label for="search">Rechercher</label>
+        <input type="text" name="search">
+    </div>
+    <div>
+        <label for="beginDate">à partir de</label>
+        <input type="date" name="beginDate">
+    </div>
+    <div>
+        <label for="endDate">Jusqu'à</label>
+        <input type="date" name="endDate">
+    </div>
+    <div>
+        <label for="status">Statut</label>
+        <select name="status">
+            <option value="allStatus">Tous</option>
+            {% for statut in status %}
+                <option value="{{statut.name}}">{{statut.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+        <div>
+        <label for="type">Type</label>
+        <select name="type">
+            <option value="allType">Tous</option>
+            {% for type in types %}
+                <option value="{{type.name}}">{{type.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <input type="submit" value="Filtrer">
+    </div>
+</form>
+
