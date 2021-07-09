@@ -23,7 +23,7 @@
                 </script>
             </li>
             <li>Les notifs</li>
-            <li>L'utilsateur</li>
+            <li><a href="{{ path('user_edit' , {'id': app.user.id}) }}">{{app.user.firstname}} {{app.user.lastname}}</a></li>
         </ul>
         <a href="{{ path('accueil_front') }}">Acceuil Front</a>
         <a href="{{ path('accueil_back') }}">Accueil Back</a>
