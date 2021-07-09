@@ -19,6 +19,9 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class UserController extends AbstractController
 {
 
+//Security et passwordHasher permettent de les utiliser dans le constructeur
+//Security permet (plus bas) de récupérer l'utilisateur connecté 
+//passwordHasher permet d'encoder le mot de passe avant de le mettre en base
     private $security;
     private $passwordHasher;
 
@@ -103,6 +106,7 @@ class UserController extends AbstractController
             return $this->renderForm('user/edit.html.twig', [
                 'user' => $user,
                 'form' => $form,
+                'id' => $id
             ]);
         }
         //Accès à la page edit pour User simple
@@ -161,6 +165,7 @@ class UserController extends AbstractController
         }
         return $this->redirectToRoute('user_edit_password', ['id' => $userId]);
     }
+    
     /**
      * @Route("/{id}", name="user_delete", methods={"POST"})
      */

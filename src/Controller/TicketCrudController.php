@@ -71,7 +71,6 @@ class TicketCrudController extends AbstractController
      */
     public function allIncidents(TicketTypeRepository $ticketTypeRepository, TicketRepository $ticketRepository): Response
     {
-//ATTENTION: lE FILTRE NE MARCHE PAS SUR CETTE ROUTE, A RETIRER OU FAIRE UN AUTRE FILTRE
         //Cette requète permet d'aller chercher l'objet "type" dans la BDD
         $type = $ticketTypeRepository->findOneBy(['name' => 'incident' ]);
         
