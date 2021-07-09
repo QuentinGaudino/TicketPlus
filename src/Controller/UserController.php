@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Form\UserAdminType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -82,33 +83,19 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, User $user, $id, UserRepository $userRepository): Response
     {
-
         //Récupération du mail de l'utilisateur connecté (UserIdentifier)
         $userIdentifierConnected = $this->security->getUser()->getUserIdentifier();
         //Récupération du User connecté grace à son mail
         $userConnected = $userRepository->findOneBy(['email' => $userIdentifierConnected]);
         $userId = $userConnected->getId();
         
-        //Accès à la page edit de l'utilisateur uniquement si c'est bien sois, ou si Admin sinon redirection vers sa page
-        //Attention aux potentielles boucles infinies
-        
-        if (($userId == $id) || ($this->isGranted('ROLE_ADMIN'))) {
-            $form = $this->createForm(UserType::class, $user);
+        //Accès à la page edit spécial Admin
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $form = $this->createForm(UserAdminType::class, $user);
             $form->handleRequest($request);
     
             if ($form->isSubmitted() && $form->isValid()) {
-                $entityManager = $this->getDoctrine()->getManager();
-
-//TODO: Ne fonctionne pas sur l'edit! A corriger
-
-                $plainPassword = $userConnected->getPassword();
-                $userConnected->setPassword($this->passwordHasher->hashPassword(
-                    $userConnected,
-                    $plainPassword
-                ));
-                $entityManager->persist($userConnected);
-                $entityManager->flush();
-                // $this->getDoctrine()->getManager()->flush();
+                $this->getDoctrine()->getManager()->flush();
     
                 return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
             }
@@ -116,6 +103,23 @@ class UserController extends AbstractController
             return $this->renderForm('user/edit.html.twig', [
                 'user' => $user,
                 'form' => $form,
+            ]);
+        }
+        //Accès à la page edit pour User simple
+        elseif (($userId == $id)) {
+            $form = $this->createForm(UserType::class, $user);
+            $form->handleRequest($request);
+    
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
+    
+                return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
+            }
+        
+            return $this->renderForm('user/edit.html.twig', [
+                'user' => $user,
+                'form' => $form,
+                'id' => $id
             ]);
         }
 
