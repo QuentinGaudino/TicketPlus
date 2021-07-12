@@ -3,7 +3,38 @@
 {% block title %}Accueil du Front!{% endblock %}
 
 {% block body %}
-<h1>Accueil du Front Office</h1>
-    <a href="{{ path('type_ticket') }}">Ouvrir un ticket</a>
+    <h1>Accueil</h1>
+    <div class="accueil__front">
+        <a href="{{ path('type_ticket') }}">
+            <div class="accueil__front_card">
+                <h2>Ouvrir un ticket</h2>
+                <span class="iconify" id="icon_new" data-icon="codicon:new-file" data-inline="false"></span>
+            </div>
+        </a>
+        <a href="#">
+            <div class="accueil__front_card">
+                <h2>Mes dernières réponses (lien non actif)</h2>
+                <span class="iconify" id="icon_lastResponses" data-icon="mdi:email-receive-outline" data-inline="false"></span>
+            </div>
+        </a>
+        <a href="{{ path('ticket_crud_my_tickets', {'search':'', 'beginDate':'', 'endDate' :'', 'status':'open', 'type' : 'demand'}) }}">
+            <div class="accueil__front_card">
+                <h2>Mes dernières demandes</h2>
+                <span class="iconify" id="icon_lastDemand" data-icon="mdi:book-multiple-outline" data-inline="false"></span>
+            </div>
+        </a>
+        <a href="{{ path('ticket_crud_my_tickets', {'search':'', 'beginDate':'', 'endDate' :'', 'status':'open', 'type' : 'incident'}) }}">
+            <div class="accueil__front_card">
+                <h2>Mes derniers incidents</h2>
+                <span class="iconify" id="icon_lastIncident" data-icon="mdi:book-remove-multiple-outline" data-inline="false"></span>
+            </div>
+        </a>
+        <a href="{{ path('ticket_crud_all_incidents') }}">
+            <div class="accueil__front_card">
+                <h2>incident en cours</h2>
+                <span class="iconify" id="icon_incidents" data-icon="mdi:alert-decagram-outline" data-inline="false"></span>
+            </div>
+        </a>
+    </div>
 
 {% endblock %}
