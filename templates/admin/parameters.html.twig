@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paramétrage de l'application{% endblock %}
+
+{% block body %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+    <h1>Paramétrage de l'application</h1>
+
+    <h2>Gestion des gravités</h2>
+    <p>La gravité d'un incident permet de lui donner un niveau d'urgence. Il est donc important de les renseigner correctement. Chaque gravité possède un valeur (allant de 0 à 10) et une rapide description, pour aider les utilisateurs a bien choisir la bonne valeur (Exemple: 0 Incident bloquant tout les terminaux, 1 Incident bloquant un terminal, etc...) ATTENTION: chaque valeur ne peut être attribuée qu'une seule et unique fois.</p>
+    
+    {# Penser à mettre une route différente par formulaire
+    Ce template est en attente, l'administration n'est pas prévue pour ce sprint 
+    Lors de la mise en prod, il faudra modifier le code dans ticket crud controller pour importer les bonnes valeurs #}
+    <form action="" method="post">
+        <div>
+            <label for="gravityValue">Valeur</label>
+            <input type="number" name="gravityValue" min="0" max ="10">
+        </div>
+        <div>
+            <label for="gravityName">Description (maximum 50 caractères)</label>
+            <input type="text" name="gravityName" maxlength="50">
+        </div>
+        <div>
+            <input type="submit" value="Nouvelle gravité">
+        </div>
+    </form>
+
+    <h2>Gestion des status</h2>
+
+    <form action="" method="post">
+        <div>
+            <label for="statusName">Nom du statut (maximum 50 caractères)</label>
+            <input type="text" name="statusName" maxlength="50">
+        </div>
+        <div>
+            <input type="submit" value="Nouveau statut">
+        </div>
+    </form>
+
+    <h2>Gestion des types</h2>
+
+        <form action="" method="post">
+        <div>
+            <label for="typeName">Nom du type (maximum 50 caractères)</label>
+            <input type="text" name="typeName" maxlength="50">
+        </div>
+        <div>
+            <input type="submit" value="Nouveau type">
+        </div>
+    </form>
+{% endblock %}

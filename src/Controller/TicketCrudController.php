@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Ticket;
+use App\Entity\TicketMessage;
 use App\Entity\TicketStatus;
 use App\Entity\TicketType;
 use App\Entity\User;
@@ -18,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 
 /**
@@ -132,10 +134,6 @@ class TicketCrudController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $type = $ticketTypeRepository->findOneBy(['name' => 'incident']);
             $status = $ticketStatusRepository->findOneBy(['name' => 'open']);
-            // $type = new TicketType();
-            // $type->setName('incident');
-            // $status = new TicketStatus();
-            // $status->setName('open');
             $user = $this->security->getUser();
             $ticket->setAuthor($user);
             $ticket->setCreationDate(new \DateTime());
@@ -168,11 +166,80 @@ class TicketCrudController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/assign", name="ticket_crud_assign", methods={"GET"}, requirements={"page"="\d+"})
+     */
+    public function assign(Ticket $ticket, TicketRepository $ticketRepository, $id): Response
+    {
+        $user = $this->security->getUser();
+        $entityManager = $this->getDoctrine()->getManager();
+        $ticket = $ticketRepository->find($id);
+        $ticket->setSupportTechnicianAssign($user);
+        $entityManager->persist($ticket);
+        $entityManager->flush();
+        
+        return $this->redirectToRoute('ticket_crud_work', [
+            'id' => $id
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/work", name="ticket_crud_work", methods={"GET","POST"}, requirements={"page"="\d+"})
+     */
+    public function work(Request $request, Ticket $ticket, TicketRepository $ticketRepository,int $id, TicketStatus $ticketStatus, TicketStatusRepository $ticketStatusRepository): Response
+    {
+        $user = $this->security->getUser();
+        $ticket = $ticketRepository->find($id);
+        $comment = $request->request->get('comment');
+        $commentSent = $request->request->get('commentSent');
+        $wait = $request->request->get('wait');
+        $close = $request->request->get('close');
+
+        if ($comment) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $ticketMessage = new TicketMessage;
+            $timeStamp = new \DateTime;
+            $ticketMessage->setValue($comment);
+            $ticketMessage->setTicket($ticket);
+            $ticketMessage->setTimeStamp($timeStamp);
+            $ticketMessage->setUser($user);
+
+            if ($commentSent) {
+                $ticket->addMessage($ticketMessage);
+
+                $entityManager->persist($ticket);
+                $entityManager->persist($ticketMessage);
+                $entityManager->flush();
+            }
+
+            if ($wait) {
+                $ticketStatus = $ticketStatusRepository->findOneBy(['name' => 'waiting']);
+                $ticket->addMessage($ticketMessage);
+                $ticket->setStatus($ticketStatus);
+                $entityManager->persist($ticket);
+                $entityManager->persist($ticketMessage);
+                $entityManager->flush();
+            }
+
+            if ($close) {
+                $ticketStatus = $ticketStatusRepository->findOneBy(['name' => 'closed']);
+                $ticket->addMessage($ticketMessage);
+                $ticket->setStatus($ticketStatus);
+                $entityManager->persist($ticket);
+                $entityManager->persist($ticketMessage);
+                $entityManager->flush();
+            }
+        }
+        return $this->render('ticket_crud/work.html.twig',[
+            'ticket' => $ticket
+        ]);
+    }
+
+    /**
      * @Route("/{id}/edit", name="ticket_crud_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Ticket $ticket): Response
     {
-        $form = $this->createForm(TicketType::class, $ticket);
+        $form = $this->createForm(TicketTypeIncident::class, $ticket);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

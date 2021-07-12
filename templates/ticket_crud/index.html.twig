@@ -30,6 +30,7 @@
                 <td>{{ ticket.IncidentDate ? ticket.IncidentDate|date('Y-m-d') : '' }}</td>
                 <td>
                     <a href="{{ path('ticket_crud_show', {'id': ticket.id}) }}">show</a>
+                    <a href="{{ path('ticket_crud_assign', {'id': ticket.id}) }}">M'assigner le ticket</a>
                     {# <a href="{{ path('ticket_crud_edit', {'id': ticket.id}) }}">edit</a> #}
                 </td>
             </tr>

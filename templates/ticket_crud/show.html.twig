@@ -32,6 +32,7 @@
 
     <a href="{{ path('ticket_crud_index') }}">back to list</a>
 
+    <a href="{{ path('ticket_crud_assign', {'id': ticket.id}) }}">M'assigner le ticket</a>
     <a href="{{ path('ticket_crud_edit', {'id': ticket.id}) }}">edit</a>
 
     {{ include('ticket_crud/_delete_form.html.twig') }}

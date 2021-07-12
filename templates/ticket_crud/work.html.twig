@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ticket{% endblock %}
+
+{% block body %}
+    <h1>Ticket</h1>
+
+    <h2>Titre</h2>
+    <p>{{ ticket.Name }}</p>
+
+    <h2>Description</h2>
+    <p>{{ ticket.Description }}</p>
+
+    <h2>Date de création</h2>
+    <p>{{ ticket.CreationDate ? ticket.CreationDate|date('d-m-Y') : '' }}</p>
+
+    <h2>Auteur</h2>
+    <p>{{ ticket.Author.firstName }} {{ ticket.Author.LastName }}</p>
+
+    <h2>Status</h2>
+    <p>{{ ticket.status.name }}</p>
+
+    {% if ticket.IncidentDate %}
+            <h2>Date de l'incident</h2>
+            <p>{{ ticket.IncidentDate|date('d-m-Y') }}</p>
+    {% endif %}
+    
+    {% if ticket.beneficiairy %}
+            <h2>Bénéficiaires</h2>
+            {% for beneficiairy in ticket.beneficiairy %}
+                <p>{{ beneficiairy.firstName }} {{ beneficiairy.lastName }}</p>
+            {% endfor %}
+    {% endif %}
+
+    {% if ticket.message %}
+            <h2>Chat</h2>
+            {% for message in ticket.message %}
+                <p>{{ message.value }}<br>{{ message.timeStamp|date("d-m-Y H:i") }} {{ message.user.firstName }} {{ message.user.lastName }}</p>
+            {% endfor %}
+    {% endif %}
+
+    <form action="" method="post">
+        <textarea name="comment" cols="150" rows="20" placeholder="Commentaire obligatoire pour fermer ou mettre en attente le ticket" required></textarea>
+        <button type="submit" name="commentSent" value="sent">Envoyer le commentaire</button>
+        <button type="submit" name="wait" value="wait">Mettre en attente</button>
+        <button type="submit" name="close" value="close">Fermer le ticket</button>
+    </form>
+
+    <a href="{{ path('ticket_crud_index') }}">Retour à la liste</a>
+{% endblock %}
