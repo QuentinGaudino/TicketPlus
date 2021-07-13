@@ -66,7 +66,6 @@ class TicketCrudController extends AbstractController
             'title' => 'Mes tickets'
         ]);
     }
-    
 
     /**
      * @Route("/allIncidents", name="ticket_crud_all_incidents", methods={"GET"})
@@ -194,6 +193,7 @@ class TicketCrudController extends AbstractController
         $wait = $request->request->get('wait');
         $close = $request->request->get('close');
 
+        //Vérification qu'un commentaire ai bien été écris
         if ($comment) {
             $entityManager = $this->getDoctrine()->getManager();
             $ticketMessage = new TicketMessage;
@@ -203,6 +203,7 @@ class TicketCrudController extends AbstractController
             $ticketMessage->setTimeStamp($timeStamp);
             $ticketMessage->setUser($user);
 
+            //Si le commentaire à bien été écris alors on vérifie quel bouton à été utilisé $commentSent / $wait / $close
             if ($commentSent) {
                 $ticket->addMessage($ticketMessage);
 
