@@ -3,18 +3,28 @@
 {% block title %}Nouveau Ticket{% endblock %}
 
 {% block body %}
-    <h1>Quel type de ticket voulez-vous ouvrir?</h1>
+    <h1 class="title is-4">Quel type de ticket voulez-vous ouvrir?</h1>
+    <div class="container">
+        <ul class="columns is-multiline is-mobile is-variable is-8">
+            <li class="is-flex is-flex-direction-column is-justify-content-center is-align-items-center column is-6-desktop">
+                <div class="box is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
+                    <p>J’ai besoin d’être habilité à un outil, d’avoir un compte, d’être doté de matériel ou j’ai simplement une question.</p>
+                    <span class="iconify" id="icon_lastDemand" data-icon="mdi:book-multiple-outline" data-inline="false"></span>
+                    <a href="{{ path('ticket_crud_new_demand') }}" class="button is-info">Faire une demande</a>
+                </div>
 
-    <ul>
-        <li>
-            <p>J’ai besoin d’être habilité à un outil, d’avoir un compte, d’être doté de matériel ou j’ai simplement une question.</p>
-            <a href="{{ path('ticket_crud_new_demand') }}">Faire une demande</a>
-        </li>
-        <li>
-            <p>J’ai besoin d’un dépannage, mon ordinateur ne fonctionne plus correctement ou déclarer tout autre incident</p>
-            <a href="{{ path('ticket_crud_new_incident') }}">Déclarer un incident</a>
-        </li>
+            </li>
+            <li class="is-flex is-flex-direction-column is-justify-content-center is-align-items-center column is-6-desktop">
+                <div class="box is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
+                    <p>J’ai besoin d’un dépannage, mon ordinateur ne fonctionne plus correctement ou déclarer tout autre incident</p>
+                    <span class="iconify" id="icon_incidents" data-icon="mdi:alert-decagram-outline" data-inline="false"></span>
+                    <a href="{{ path('ticket_crud_new_incident') }}" class="button is-info">Déclarer un incident</a>
+                </div>
+            </li>
     </ul>
-
-    <a href="{{ path('accueil_front') }}">Retour à l'accueil</a>
+    </div>
+    <div class="container is-flex is-flex-direction-row-reverse">
+        <a href="{{ path('accueil_front') }}" class="button is-primary mt-3">Retour à l'accueil</a>
+    </div>
+    
 {% endblock %}

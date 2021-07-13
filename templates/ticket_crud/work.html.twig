@@ -3,48 +3,117 @@
 {% block title %}Ticket{% endblock %}
 
 {% block body %}
-    <h1>Ticket</h1>
+    <h1 class="title is-1">Ticket</h1>
+    <div class="container">
+        <div class="columns is-multiline is-mobile is-variable is-8">
+            <div class="column is-4-desktop is-12-touch">
+                <div class="box">
+                    <h2 class="title is-4">Titre</h2>
+                    <p>{{ ticket.Name }}</p>
+                </div>
+            </div>
 
-    <h2>Titre</h2>
-    <p>{{ ticket.Name }}</p>
+            <div class="column is-4-desktop is-12-touch">
+                <div class="box">
+                    <h2 class="title is-4">Description</h2>
+                    <p>{{ ticket.Description }}</p>
+                </div>
+            </div>
+            <div class="column is-4-desktop is-12-touch">
+                <div class="box">
+                    <h2 class="title is-4">Date de création</h2>
+                    <p>{{ ticket.CreationDate ? ticket.CreationDate|date('d-m-Y') : '' }}</p>
+                </div>
+            </div>
+            <div class="column is-4-desktop is-12-touch">
+                <div class="box">
+                    <h2 class="title is-4">Auteur</h2>
+                    <p>{{ ticket.Author.firstName }}
+                        {{ ticket.Author.LastName }}</p>
+                </div>
+            </div>
+            <div class="column is-4-desktop is-12-touch">
+                <div class="box">
+                    <h2 class="title is-4">Status</h2>
+                    <p>{{ ticket.status.name }}</p>
+                </div>
+            </div>
+            {% if ticket.IncidentDate %}
+                <div class="column is-4-desktop is-12-touch">
+                    <div class="box">
+                        <h2 class="title is-4">Date de l'incident</h2>
+                        <p>{{ ticket.IncidentDate|date('d-m-Y') }}</p>
+                    </div>
+                </div>
+            {% endif %}
 
-    <h2>Description</h2>
-    <p>{{ ticket.Description }}</p>
+            {% if ticket.beneficiairy %}
+                <div class="column is-4-desktop is-12-touch">
+                    <div class="box">
+                        <h2 class="title is-4">Bénéficiaires</h2>
+                        {% for beneficiairy in ticket.beneficiairy %}
+                            <p>{{ beneficiairy.firstName }}
+                                {{ beneficiairy.lastName }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 
-    <h2>Date de création</h2>
-    <p>{{ ticket.CreationDate ? ticket.CreationDate|date('d-m-Y') : '' }}</p>
+    <div class="container">
+        {% if ticket.message %}
+                <h2 class="title is-4">Chat</h2>
+                {% for message in ticket.message %}
+                    {# <p>{{ message.value }}<br>{{ message.timeStamp|date("d-m-Y H:i") }} {{ message.user.firstName }} {{ message.user.lastName }}</p> #}
+                    <article class="media box">
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <strong>{{ message.user.firstName }} {{ message.user.lastName }}</strong>
+                                    <small>{{ message.timeStamp|date("d-m-Y H:i") }}</small>
+                                    <br>
+                                    {{ message.value }}
+                                </p>
+                            </div>
+                        </div>
+                    </article>
 
-    <h2>Auteur</h2>
-    <p>{{ ticket.Author.firstName }} {{ ticket.Author.LastName }}</p>
+                {% endfor %}
+        {% endif %}
 
-    <h2>Status</h2>
-    <p>{{ ticket.status.name }}</p>
+        {# <form action="" method="post">
+            <textarea name="comment" cols="150" rows="20" placeholder="Commentaire obligatoire pour fermer ou mettre en attente le ticket" required></textarea>
+            <button type="submit" name="commentSent" value="sent">Envoyer le commentaire</button>
+            <button type="submit" name="wait" value="wait">Mettre en attente</button>
+            <button type="submit" name="close" value="close">Fermer le ticket</button>
+        </form> #}
+        <article class="media">
+            <form action="" method="post" class="media-content">
+                <div class="field">
+                    <p class="control">
+                        <textarea name="comment" class="textarea" placeholder="Commentaire obligatoire pour fermer ou mettre en attente le ticket" required></textarea>
+                    </p>
+                </div>
+                <nav class="level">
+                    <div class="level-left">
+                        <div class="level-item">
+                            <button type="submit" name="commentSent" value="sent" class="button is-info">Envoyer le commentaire</button>
+                        </div>
+                        <div class="level-item">
+                            <button type="submit" name="wait" value="wait" class="button is-warning">Mettre en attente</button>
+                        </div>
+                        <div class="level-item">
+                            <button type="submit" name="close" value="close" class="button is-danger">Fermer le ticket</button>
+                        </div>
+                    </div>
+                </nav>
+            </form>
+        </article>
+    </div>
 
-    {% if ticket.IncidentDate %}
-            <h2>Date de l'incident</h2>
-            <p>{{ ticket.IncidentDate|date('d-m-Y') }}</p>
-    {% endif %}
+    <div class="container is-flex is-flex-direction-row-reverse">
+        <a href="{{ path('ticket_crud_index') }}" class="button is-primary">Retour à la liste</a>
+    </div>
     
-    {% if ticket.beneficiairy %}
-            <h2>Bénéficiaires</h2>
-            {% for beneficiairy in ticket.beneficiairy %}
-                <p>{{ beneficiairy.firstName }} {{ beneficiairy.lastName }}</p>
-            {% endfor %}
-    {% endif %}
-
-    {% if ticket.message %}
-            <h2>Chat</h2>
-            {% for message in ticket.message %}
-                <p>{{ message.value }}<br>{{ message.timeStamp|date("d-m-Y H:i") }} {{ message.user.firstName }} {{ message.user.lastName }}</p>
-            {% endfor %}
-    {% endif %}
-
-    <form action="" method="post">
-        <textarea name="comment" cols="150" rows="20" placeholder="Commentaire obligatoire pour fermer ou mettre en attente le ticket" required></textarea>
-        <button type="submit" name="commentSent" value="sent">Envoyer le commentaire</button>
-        <button type="submit" name="wait" value="wait">Mettre en attente</button>
-        <button type="submit" name="close" value="close">Fermer le ticket</button>
-    </form>
-
-    <a href="{{ path('ticket_crud_index') }}">Retour à la liste</a>
 {% endblock %}

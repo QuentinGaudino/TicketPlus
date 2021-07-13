@@ -68,9 +68,10 @@ header{
 .accueil__front a{
     text-decoration: none;
     color: black;
+    text-align: center;
 }
 
-.accueil__front_card{
+/* .accueil__front_card{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -84,7 +85,7 @@ header{
     height: 15vh;
     background-color: white;
 
-}
+} */
 
 .iconify{
     height: 10rem;
@@ -124,4 +125,5 @@ h1{
 h2 h3 h4 h5{
     font-family: 'Krub', sans-serif;
     font-weight: lighter;
+    text-align: center;
 }
