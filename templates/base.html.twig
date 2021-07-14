@@ -46,9 +46,10 @@
             <a href="{{ path('ticket_crud_my_tickets', {'search':'', 'beginDate':'', 'endDate' :'', 'status':'open', 'type' : 'demand'}) }}">Mes demandes</a>
             <a href="{{ path('ticket_crud_my_tickets', {'search':'', 'beginDate':'', 'endDate' :'', 'status':'open', 'type' : 'incident'}) }}">Mes incidents</a>
         </header>
-    
-        {% block body %}
-        {% endblock %}  
+        <div class="container">
+            {% block body %}
+            {% endblock %}  
+        </div>
     </div>
         <footer class="footer">
             <div class="content has-text-centered">

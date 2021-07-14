@@ -1,33 +1,31 @@
-<div class="container">
-    {{ form_start(form, {'attr': {'class' : 'box'}}) }}
-        <div>
-            {# {{ form_widget(form) }} #}
-            {{ form_label(form.Name, 'Titre') }}
-            {{ form_widget(form.Name, {'attr': {'class' : 'input'}}) }}
-            {{ form_label(form.Description) }}
-            {{ form_widget(form.Description, {'attr': {'class' : 'textarea'}}) }}
-            {% if formType == 'demand' %}
-                {{ form_label(form.demandCategory, 'Catégorie') }}
-                {{ form_widget(form.demandCategory, {'attr': {'class' : 'select'}}) }}
-                <br>
-            {% endif %}
+{{ form_start(form, {'attr': {'class' : 'box'}}) }}
+    <div>
+        {# {{ form_widget(form) }} #}
+        {{ form_label(form.Name, 'Titre') }}
+        {{ form_widget(form.Name, {'attr': {'class' : 'input'}}) }}
+        {{ form_label(form.Description) }}
+        {{ form_widget(form.Description, {'attr': {'class' : 'textarea'}}) }}
+        {% if formType == 'demand' %}
+            {{ form_label(form.demandCategory, 'Catégorie') }}
+            {{ form_widget(form.demandCategory, {'attr': {'class' : 'select'}}) }}
+            <br>
+        {% endif %}
 
-            {% if formType == 'incident' %}
-                {{ form_label(form.incidentCategory, 'Catégorie') }}
-                {{ form_widget(form.incidentCategory, {'attr': {'class' : 'select'}}) }}
-                <br>
-                {{ form_label(form.gravity, 'gravité') }}
-                {{ form_widget(form.gravity, {'attr': {'class' : 'select'}}) }}
-                <br>
-                {{ form_label(form.Incident_date, 'Date de l\'incident') }}
-                {{ form_widget(form.Incident_date) }}
-                <br>
-            {% endif %}
+        {% if formType == 'incident' %}
+            {{ form_label(form.incidentCategory, 'Catégorie') }}
+            {{ form_widget(form.incidentCategory, {'attr': {'class' : 'select'}}) }}
+            <br>
+            {{ form_label(form.gravity, 'gravité') }}
+            {{ form_widget(form.gravity, {'attr': {'class' : 'select'}}) }}
+            <br>
+            {{ form_label(form.Incident_date, 'Date de l\'incident') }}
+            {{ form_widget(form.Incident_date) }}
+            <br>
+        {% endif %}
 
-            {{ form_label(form.support_assign, 'Assignation du support') }}
-            {{ form_widget(form.support_assign, {'attr': {'class' : 'select'}}) }}
-        </div>
-        
-        <button class="button is-info">{{ button_label|default('Envoyer') }}</button>
-    {{ form_end(form) }}
-</div>
+        {{ form_label(form.support_assign, 'Assignation du support') }}
+        {{ form_widget(form.support_assign, {'attr': {'class' : 'select'}}) }}
+    </div>
+    
+    <button class="button is-info">{{ button_label|default('Envoyer') }}</button>
+{{ form_end(form) }}

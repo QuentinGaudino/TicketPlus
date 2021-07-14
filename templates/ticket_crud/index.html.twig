@@ -5,7 +5,6 @@
 {% block body %}
     <h1 class="title is-2">{{ title }}</h1>
 
-    <div class="container">
         <table class="table table is-hoverable is-fullwidth">
             <thead>
                 <tr>
@@ -48,5 +47,4 @@
 
         <a href="{{ path('ticket_crud_new_demand') }}" class="button is-link">Nouvelle demande</a>
         <a href="{{ path('ticket_crud_new_incident') }}" class="button is-danger">Nouvel incident</a>
-    </div>
 {% endblock %}
