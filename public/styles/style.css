@@ -1,3 +1,8 @@
+html{
+    margin: 0;
+    padding: 0;
+}
+
 body{
     margin: 0;
     padding: 0;
@@ -5,10 +10,43 @@ body{
     font-family: 'Roboto Slab', serif;
 }
 
-html{
-    margin: 0;
-    padding: 0;
+header{
+    background-color: white;
 }
+
+header .iconify{
+    height: 2rem;
+    width: 2rem;
+}
+
+h1{
+    text-align: center;
+    font-family: 'Krub', sans-serif;
+}
+
+h2, h3, h4, h5{
+    font-family: 'Krub', sans-serif;
+    font-weight: lighter;
+    text-align: center;
+}
+
+.content {
+    min-height: calc(100vh - 100px);
+}
+.footer {
+    height: 100px;
+    background-color: #1D3557;
+}
+
+.footer p{
+    color: white;
+}
+
+.footer p a,strong{
+    color: white;
+    text-decoration: none;
+}
+
 .connexion{
     display: flex;
     flex-direction: column;
@@ -23,10 +61,6 @@ html{
 
 .connexion div{
     padding: 0.5rem;
-}
-
-header{
-    background-color: white;
 }
 
 .connexion button{
@@ -71,22 +105,6 @@ header{
     text-align: center;
 }
 
-/* .accueil__front_card{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    padding: 1rem 3rem;
-    margin: 2rem;;
-    border: black solid 1px;
-    border-radius: 2rem;
-    min-width: 600px;
-    height: 15vh;
-    background-color: white;
-
-} */
-
 .iconify{
     height: 10rem;
     width: 10rem;
@@ -110,37 +128,4 @@ header{
 
 #icon_incidents{
     color: #E63946;
-}
-
-header .iconify{
-    height: 2rem;
-    width: 2rem;
-}
-
-h1{
-    text-align: center;
-    font-family: 'Krub', sans-serif;
-}
-
-h2, h3, h4, h5{
-    font-family: 'Krub', sans-serif;
-    font-weight: lighter;
-    text-align: center;
-}
-
-.content {
-    min-height: calc(100vh - 100px);
-}
-.footer {
-    height: 100px;
-    background-color: #1D3557;
-}
-
-.footer p{
-    color: white;
-}
-
-.footer p a,strong{
-    color: white;
-    text-decoration: none;
 }

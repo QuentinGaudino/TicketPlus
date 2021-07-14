@@ -38,7 +38,7 @@
 
     <a href="{{ path('ticket_crud_index') }}" class="button is-link">Liste des tickets</a>
 
-    {% if ticket.status.name == 'open' %}
+    {% if ticket.status.name == 'open' and is_granted('ROLE_SUPPORT') %}
         <a href="{{ path('ticket_crud_assign', {'id': ticket.id}) }}" class="button is-primary">M'assigner le ticket</a>
     {% endif %}
     
