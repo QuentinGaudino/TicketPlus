@@ -5,43 +5,45 @@
 {% block body %}
     <h1 class="title is-2">{{ title }}</h1>
 
-    <table class="table table is-hoverable is-fullwidth">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Titre</th>
-                <th>Description</th>
-                <th>Date de création</th>
-                <th>Date de l'incident</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% if filtre %}
-            {% include "ticket_crud/filter.html.twig" %}
-        {% endif %}
-        
-        {% for ticket in tickets %}
-            <tr>
-                <td>{{ ticket.id }}</td>
-                <td><a href="{{ path('ticket_crud_show', {'id': ticket.id}) }}">{{ ticket.Name }}</a></td>
-                <td>{{ ticket.Description }}</td>
-                <td>{{ ticket.CreationDate ? ticket.CreationDate|date('Y-m-d') : '' }}</td>
-                <td>{{ ticket.IncidentDate ? ticket.IncidentDate|date('Y-m-d') : '' }}</td>
-                <td>
-                    <a href="{{ path('ticket_crud_show', {'id': ticket.id}) }}" class="button is-small is-info">show</a>
-                    <a href="{{ path('ticket_crud_assign', {'id': ticket.id}) }}" class="button is-small is-primary">M'assigner le ticket</a>
-                    {# <a href="{{ path('ticket_crud_edit', {'id': ticket.id}) }}">edit</a> #}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="container">
+        <table class="table table is-hoverable is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Titre</th>
+                    <th>Description</th>
+                    <th>Date de création</th>
+                    <th>Date de l'incident</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if filtre %}
+                {% include "ticket_crud/filter.html.twig" %}
+            {% endif %}
+            
+            {% for ticket in tickets %}
+                <tr>
+                    <td>{{ ticket.id }}</td>
+                    <td><a href="{{ path('ticket_crud_show', {'id': ticket.id}) }}">{{ ticket.Name }}</a></td>
+                    <td>{{ ticket.Description }}</td>
+                    <td>{{ ticket.CreationDate ? ticket.CreationDate|date('Y-m-d') : '' }}</td>
+                    <td>{{ ticket.IncidentDate ? ticket.IncidentDate|date('Y-m-d') : '' }}</td>
+                    <td>
+                        <a href="{{ path('ticket_crud_show', {'id': ticket.id}) }}" class="button is-small is-info">show</a>
+                        <a href="{{ path('ticket_crud_assign', {'id': ticket.id}) }}" class="button is-small is-primary">M'assigner le ticket</a>
+                        {# <a href="{{ path('ticket_crud_edit', {'id': ticket.id}) }}">edit</a> #}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <a href="{{ path('ticket_crud_new_demand') }}" class="button is-link">Nouvelle demande</a>
-    <a href="{{ path('ticket_crud_new_incident') }}" class="button is-danger">Nouvel incident</a>
+        <a href="{{ path('ticket_crud_new_demand') }}" class="button is-link">Nouvelle demande</a>
+        <a href="{{ path('ticket_crud_new_incident') }}" class="button is-danger">Nouvel incident</a>
+    </div>
 {% endblock %}
