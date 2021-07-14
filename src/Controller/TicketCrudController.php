@@ -118,6 +118,7 @@ class TicketCrudController extends AbstractController
         return $this->renderForm('ticket_crud/new.html.twig', [
             'ticket' => $ticket,
             'form' => $form,
+            'formType' => 'demand'
         ]);
     }
 
@@ -151,6 +152,7 @@ class TicketCrudController extends AbstractController
         return $this->renderForm('ticket_crud/new.html.twig', [
             'ticket' => $ticket,
             'form' => $form,
+            'formType' => 'incident'
         ]);
     }
 

@@ -1,36 +1,35 @@
-<form action="" method="get">
-    <div>
-        <label for="search">Rechercher</label>
-        <input type="text" name="search">
+<form action="" method="get" class="field is-horizontal">
+    <div class="field-body mt-3 mb-3 container">
+        <div class="field is-grouped is-flex is-align-items-center">
+            <label for="search" class="label mr-2">Mot clé</label>
+            <input type="text" name="search" class="input is-small mr-5" style="width: 150px;">
+        
+            <label for="beginDate" class="label mr-2">à partir de</label>
+            <input type="date" name="beginDate" class="mr-5">
+        
+            <label for="endDate" class="label mr-2">Jusqu'à</label>
+            <input type="date" name="endDate" class="mr-5">
+
+            <label for="status" class="label mr-2">Statut</label>
+            <select name="status" class="select mr-5">
+                <option value="allStatus">Tous</option>
+                {% for statut in status %}
+                    <option value="{{statut.name}}">{{statut.name}}</option>
+                {% endfor %}
+            </select>
+        
+            <label for="type" class="label mr-2">Type</label>
+            <select name="type" class='select mr-5'>
+                <option value="allType">Tous</option>
+                {% for type in types %}
+                    <option value="{{type.name}}">{{type.name}}</option>
+                {% endfor %}
+            </select>
+
+            <input type="submit" value="Filtrer" class="button is-small is-link mt-2 mb-2">
+        </div>
     </div>
-    <div>
-        <label for="beginDate">à partir de</label>
-        <input type="date" name="beginDate">
-    </div>
-    <div>
-        <label for="endDate">Jusqu'à</label>
-        <input type="date" name="endDate">
-    </div>
-    <div>
-        <label for="status">Statut</label>
-        <select name="status">
-            <option value="allStatus">Tous</option>
-            {% for statut in status %}
-                <option value="{{statut.name}}">{{statut.name}}</option>
-            {% endfor %}
-        </select>
-    </div>
-        <div>
-        <label for="type">Type</label>
-        <select name="type">
-            <option value="allType">Tous</option>
-            {% for type in types %}
-                <option value="{{type.name}}">{{type.name}}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div>
-        <input type="submit" value="Filtrer">
-    </div>
+
+
 </form>
 

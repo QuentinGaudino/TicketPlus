@@ -122,8 +122,25 @@ h1{
     font-family: 'Krub', sans-serif;
 }
 
-h2 h3 h4 h5{
+h2, h3, h4, h5{
     font-family: 'Krub', sans-serif;
     font-weight: lighter;
     text-align: center;
+}
+
+.content {
+    min-height: calc(100vh - 100px);
+}
+.footer {
+    height: 100px;
+    background-color: #1D3557;
+}
+
+.footer p{
+    color: white;
+}
+
+.footer p a,strong{
+    color: white;
+    text-decoration: none;
 }

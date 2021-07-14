@@ -3,16 +3,16 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
-    <h1>{{ title }}</h1>
+    <h1 class="title is-2">{{ title }}</h1>
 
-    <table class="table">
+    <table class="table table is-hoverable is-fullwidth">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Name</th>
+                <th>Titre</th>
                 <th>Description</th>
-                <th>Creation_date</th>
-                <th>Incident_date</th>
+                <th>Date de création</th>
+                <th>Date de l'incident</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -24,13 +24,13 @@
         {% for ticket in tickets %}
             <tr>
                 <td>{{ ticket.id }}</td>
-                <td>{{ ticket.Name }}</td>
+                <td><a href="{{ path('ticket_crud_show', {'id': ticket.id}) }}">{{ ticket.Name }}</a></td>
                 <td>{{ ticket.Description }}</td>
                 <td>{{ ticket.CreationDate ? ticket.CreationDate|date('Y-m-d') : '' }}</td>
                 <td>{{ ticket.IncidentDate ? ticket.IncidentDate|date('Y-m-d') : '' }}</td>
                 <td>
-                    <a href="{{ path('ticket_crud_show', {'id': ticket.id}) }}">show</a>
-                    <a href="{{ path('ticket_crud_assign', {'id': ticket.id}) }}">M'assigner le ticket</a>
+                    <a href="{{ path('ticket_crud_show', {'id': ticket.id}) }}" class="button is-small is-info">show</a>
+                    <a href="{{ path('ticket_crud_assign', {'id': ticket.id}) }}" class="button is-small is-primary">M'assigner le ticket</a>
                     {# <a href="{{ path('ticket_crud_edit', {'id': ticket.id}) }}">edit</a> #}
                 </td>
             </tr>
@@ -42,6 +42,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('ticket_crud_new_demand') }}">Nouvelle demande</a>
-    <a href="{{ path('ticket_crud_new_incident') }}">Nouvel incident</a>
+    <a href="{{ path('ticket_crud_new_demand') }}" class="button is-link">Nouvelle demande</a>
+    <a href="{{ path('ticket_crud_new_incident') }}" class="button is-danger">Nouvel incident</a>
 {% endblock %}
