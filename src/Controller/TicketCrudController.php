@@ -51,6 +51,20 @@ class TicketCrudController extends AbstractController
     }
 
     /**
+     * @Route("/open", name="ticket_crud_open", methods={"GET"})
+     */
+    public function open(TicketRepository $ticketRepository): Response
+    {
+        $ticketOpen = $ticketRepository->findBy(['status' => 'open']);
+        return $this->render('ticket_crud/index.html.twig', [
+            'tickets' => $ticketOpen,
+            'filtre' => false,
+            'title' => "Tout les tickets"
+            ]
+        );
+    }
+
+    /**
      * @Route("/myTickets", name="ticket_crud_my_tickets", methods={"GET"})
      */
     public function myTickets(TicketRepository $ticketRepository): Response
@@ -73,18 +87,52 @@ class TicketCrudController extends AbstractController
     public function allIncidents(TicketTypeRepository $ticketTypeRepository, TicketRepository $ticketRepository): Response
     {
         //Cette requète permet d'aller chercher l'objet "type" dans la BDD
-        $type = $ticketTypeRepository->findOneBy(['name' => 'incident' ]);
+        $typeIncident = $ticketTypeRepository->findOneBy(['name' => 'incident' ]);
         
         return $this->render('ticket_crud/index.html.twig', [
             
             'tickets' => $ticketRepository->findBy(
-                ['type' => $type ]
+                ['type' => $typeIncident ]
             ),
             'status'=> $this->allStatus,
             'types' => $this->allTypes,
             'filtre' => false,
             'title' => 'Tout les incidents'
         ]);
+    }
+
+    /**
+     * @Route("/demandsOpen", name="ticket_crud_demands_open", methods={"GET"})
+     */
+    public function demandsOpen(TicketRepository $ticketRepository, TicketTypeRepository $ticketTypeRepository, TicketStatusRepository $ticketStatusRepository): Response
+    {
+        //Cette requète permet d'aller chercher l'objet "type" dans la BDD
+        $typeDemand = $ticketTypeRepository->findOneBy(['name' => 'demand' ]);
+        $statusOpen =  $ticketStatusRepository->findOneBy(['name' => 'open']);
+        $demandOpen = $ticketRepository->findBy(['status' => $statusOpen, 'type' => $typeDemand]);
+        return $this->render('ticket_crud/index.html.twig', [
+            'tickets' => $demandOpen,
+            'filtre' => false,
+            'title' => "Tout les tickets"
+            ]
+        );
+    }
+
+    /**
+     * @Route("/incidentsOpen", name="ticket_crud_incidents_open", methods={"GET"})
+     */
+    public function incidentsOpen(TicketRepository $ticketRepository, TicketTypeRepository $ticketTypeRepository, TicketStatusRepository $ticketStatusRepository): Response
+    {
+        //Cette requète permet d'aller chercher l'objet "type" dans la BDD
+        $typeIncident = $ticketTypeRepository->findOneBy(['name' => 'incident' ]);
+        $statusOpen =  $ticketStatusRepository->findOneBy(['name' => 'open']);
+        $incidentsOpen = $ticketRepository->findBy(['status' => $statusOpen, 'type' => $typeIncident]);
+        return $this->render('ticket_crud/index.html.twig', [
+            'tickets' => $incidentsOpen,
+            'filtre' => false,
+            'title' => "Tout les tickets"
+            ]
+        );
     }
 
     /**

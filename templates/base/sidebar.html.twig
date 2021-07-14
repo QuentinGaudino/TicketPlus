@@ -1,16 +1,45 @@
-        <ul class="side">
-            <li class="sidebar_item"><a href="{{ path('') }}">Tickets à traiter</a></li>
-            <li class="sidebar_item"><a href="{{ path('') }}"></a>Tickets</li>
-                <ul>
-                    <li>
-                        <li class="sidebar_subItem"><a href="{{ path('') }}"></a>Incidents</li>
-                        <li class="sidebar_subItem"><a href="{{ path('') }}"></a>Demandes</li>
-                        <li class="sidebar_subItem"><a href="{{ path('') }}"></a>Tout</li>
-                    </li>
-                </ul>
-            <li class="sidebar_item"><a href="{{ path('') }}"></a>Messages urgents</li>
-                <ul>
-                    <li class="sidebar_subItem"><a href="{{ path('') }}"></a>Listes des messages urgents</li>
-                    <li class="sidebar_subItem"><a href="{{ path('') }}"></a>Créer un nouveau message urgent</li>
-                </ul>
+{# <ul class="side">
+    <li class="sidebar_item"><a href="{{ path('') }}">Tickets à traiter</a></li>
+    <li class="sidebar_item"><a href="{{ path('') }}"></a>Tickets</li>
+        <ul>
+            <li>
+                <li class="sidebar_subItem"><a href="{{ path('') }}"></a>Incidents</li>
+                <li class="sidebar_subItem"><a href="{{ path('') }}"></a>Demandes</li>
+                <li class="sidebar_subItem"><a href="{{ path('') }}"></a>Tout</li>
+            </li>
         </ul>
+    <li class="sidebar_item"><a href="{{ path('') }}"></a>Messages urgents</li>
+        <ul>
+            <li class="sidebar_subItem"><a href="{{ path('') }}"></a>Listes des messages urgents</li>
+            <li class="sidebar_subItem"><a href="{{ path('') }}"></a>Créer un nouveau message urgent</li>
+        </ul>
+</ul> #}
+
+<aside class="sidebar">
+    {# Ce if est en prévision du moment ou les user front pourront choisir ou non le mode pro #}
+    {% if is_granted('ROLE_SUPPORT') %}
+        <a href="{{ path('accueil_back') }}"><img class="sidebar_logo" src="{{ asset('images/logo_t_plus.svg') }}" alt="Le logo T+"></a>
+    {% else %}
+        <a href="{{ path('accueil_front') }}"><img class="sidebar_logo" src="{{ asset('images/logo_t_plus.svg') }}" alt="Le logo T+"></a>
+    {% endif %}
+    
+	<a href="{{ path('ticket_crud_open') }}" class="sidebar_important">Tickets à traiter</a>
+	<p class="sidebar_interlayer">
+		<strong>Tickets</strong>
+	</p>
+    <hr>
+	<ul class="sidebarItems">
+        <li><a href="{{ path('ticket_crud_incidents_open') }}" class="sidebar_subItem">Incidents ouverts</a></li>
+        <li><a href="{{ path('ticket_crud_demands_open') }}" class="sidebar_subItem">Demandes ouvertes</a></li>
+        <li><a href="{{ path('ticket_crud_index') }}" class="sidebar_subItem">Tout</a></li>
+	</ul>
+
+    <p class="sidebar_interlayer">
+		<strong>Messages urgents</strong>
+	</p>
+    <hr>
+	<ul class="sidebarItems">
+        <li><a href="#" class="sidebar_subItem">Listes des messages urgents</a></li>
+        <li><a href="#" class="sidebar_subItem">Créer un nouveau message urgent</a></li>
+	</ul>
+</aside>

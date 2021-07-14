@@ -1,0 +1,25 @@
+<header>
+    <ul class="navbar">
+        <li class="navbar_item">
+            <script>
+                const date = new Date();
+                const options = {weekday: "long", year: "numeric", month: "long", day: "2-digit"};
+                document.write(date.toLocaleDateString("fr-FR", options));
+            </script>
+        </li>
+        <li class="navbar_item"><span class="iconify" data-icon="carbon-notification" data-inline="false"></span></li>
+        {# Obliger de mettre le svg "en dur" ici pour le personnaliser et mettre le point en rouge mais le reste en noir #}
+        <li class="navbar_item"><svg class='iconify' xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M26 16.586V14h-2v3a1 1 0 0 0 .293.707L27 20.414V22H5v-1.586l2.707-2.707A1 1 0 0 0 8 17v-4a7.985 7.985 0 0 1 12-6.918V3.847a9.896 9.896 0 0 0-3-.796V1h-2v2.05A10.014 10.014 0 0 0 6 13v3.586l-2.707 2.707A1 1 0 0 0 3 20v3a1 1 0 0 0 1 1h7v1a5 5 0 0 0 10 0v-1h7a1 1 0 0 0 1-1v-3a1 1 0 0 0-.293-.707zM19 25a3 3 0 0 1-6 0v-1h6z" fill="#000000"/><circle cx="26" cy="8" r="4" fill="#E63946"/></svg></li>
+        
+        <li class="navbar_item"><a href="{{ path('user_edit' , {'id': app.user.id}) }}">{{app.user.firstname}} {{app.user.lastname}}</a></li>
+    </ul>
+    {# ! ! ! ! ! DEV BAR ! ! ! ! ! #}
+    {# <a href="{{ path('accueil_front') }}">Acceuil Front</a>
+    <a href="{{ path('accueil_back') }}">Accueil Back</a>
+    <a href="{{ path('ticket_crud_new_demand') }}">Nouvelle demande</a>
+    <a href="{{ path('ticket_crud_new_incident') }}">Nouvel incident</a>
+    <a href="{{ path('ticket_crud_all_incidents') }}">Tout les incidents</a>
+    <a href="{{ path('ticket_crud_index') }}">Tout les tickets</a>
+    <a href="{{ path('ticket_crud_my_tickets', {'search':'', 'beginDate':'', 'endDate' :'', 'status':'open', 'type' : 'demand'}) }}">Mes demandes</a>
+    <a href="{{ path('ticket_crud_my_tickets', {'search':'', 'beginDate':'', 'endDate' :'', 'status':'open', 'type' : 'incident'}) }}">Mes incidents</a> #}
+</header>

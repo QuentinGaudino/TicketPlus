@@ -30,8 +30,11 @@ h2, h3, h4, h5{
     text-align: center;
 }
 
+/*Attention la marge left en commentaire plus bas est gérée dans base.html.twig*/
 .content {
     min-height: calc(100vh - 100px);
+    /* margin-left: 11.5rem; */
+    padding: 0px 10px;
 }
 .footer {
     height: 100px;
@@ -128,4 +131,65 @@ h2, h3, h4, h5{
 
 #icon_incidents{
     color: #E63946;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 12rem; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #1D3557; /* Black */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    /* padding-top: 10rem; */
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.sidebar_logo{
+    width: 9rem;
+    height: auto;
+    margin: 0 0.5rem 4rem 0.5rem;
+}
+
+.sidebar_subItem{
+    display: flex;
+    color: white;
+    text-decoration: none;
+    padding: 1rem 1rem;
+}
+
+.sidebar_subItem:hover{
+    background-color: #A8DADC;
+    border-radius: 0.5rem;
+}
+
+.sidebar_important{
+    display: flex;
+    align-self: center;
+    color: white;
+    background-color: #E63946;
+    padding: 1rem 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.sidebar_important:hover{
+    transform: scale();
+}
+
+.sidebarItems{
+    /* margin-left: 1rem; */
+}
+
+.sidebar_interlayer{
+    padding: 1rem 0 0 0;
+    font-size: 1.1rem;
+}
+
+.sidebar>hr{
+    margin-top: 0.5rem;
 }
