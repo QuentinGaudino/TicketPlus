@@ -1,21 +1,26 @@
 {{ form_start(form) }}
     {# {{ form_widget(form) }} #}
     <div>
-        {{ form_label(form.firstName, 'Prénom') }}
-        {{ form_widget(form.firstName, {'attr': {'class' : 'input'}}) }}
-        {{ form_label(form.lastName, 'Nom de famille') }}
-        {{ form_widget(form.lastName, {'attr': {'class' : 'input'}}) }}
+        {% if is_granted('ROLE_ADMIN') %}
+            {{ form_label(form.firstName, 'Prénom') }}
+            {{ form_widget(form.firstName, {'attr': {'class' : 'input'}}) }}
+            {{ form_label(form.lastName, 'Nom de famille') }}
+            {{ form_widget(form.lastName, {'attr': {'class' : 'input'}}) }}
+            {{ form_label(form.roles, 'Droits') }}
+            {{ form_widget(form.roles, {'attr': {'class' : 'select'}}) }}
+            <br>
+            {{ form_label(form.service, 'Service') }}
+            {{ form_widget(form.service, {'attr': {'class' : 'select'}}) }}
+        {% endif %}
+
         {{ form_label(form.email, 'Email') }}
         {{ form_widget(form.email, {'attr': {'class' : 'input'}}) }}
-        {{ form_label(form.roles, 'Droits') }}
-        {{ form_widget(form.roles, {'attr': {'class' : 'select'}}) }}
-        <br>
         {{ form_label(form.address, 'Adresse') }}
         {{ form_widget(form.address, {'attr': {'class' : 'input'}}) }}
         {{ form_label(form.avatarLink, 'Lien de l\'avatar') }}
         {{ form_widget(form.avatarLink, {'attr': {'class' : 'input'}}) }}
-        {{ form_label(form.service, 'Service') }}
-        {{ form_widget(form.service, {'attr': {'class' : 'select'}}) }}
+
     </div>
     <button class="button is-info mt-3">{{ button_label|default('Mettre à jour') }}</button>
+    <a href="{{ path('accueil_front') }}" class="button is-primary mt-3 ml-3">Retour à l'accueil</a>
 {{ form_end(form) }}

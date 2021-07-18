@@ -68,9 +68,9 @@
                     {# <p>{{ message.value }}<br>{{ message.timeStamp|date("d-m-Y H:i") }} {{ message.user.firstName }} {{ message.user.lastName }}</p> #}
                     <article class="media box">
                         <div class="media-content">
-                            <div class="content">
+                            <div class="">
                                 <p>
-                                    <strong>{{ message.user.firstName }} {{ message.user.lastName }}</strong>
+                                    {{ message.user.firstName }} {{ message.user.lastName }}
                                     <small>{{ message.timeStamp|date("d-m-Y H:i") }}</small>
                                     <br>
                                     {{ message.value }}
@@ -100,12 +100,24 @@
                         <div class="level-item">
                             <button type="submit" name="commentSent" value="sent" class="button is-info">Envoyer le commentaire</button>
                         </div>
-                        <div class="level-item">
-                            <button type="submit" name="wait" value="wait" class="button is-warning">Mettre en attente</button>
-                        </div>
-                        <div class="level-item">
-                            <button type="submit" name="close" value="close" class="button is-danger">Fermer le ticket</button>
-                        </div>
+
+                        {% if ticket.status.name != "closed" %}
+                            {% if ticket.status.name == "waiting" %}
+                                <div class="level-item">
+                                    <button type="submit" name="unwait" value="unwait" class="button is-warning">Sortir de l'attente</button>
+                                </div>
+                            {% endif %}
+                            {% if ticket.status.name == "open" %}
+                                <div class="level-item">
+                                    <button type="submit" name="wait" value="wait" class="button is-warning">Mettre en attente</button>
+                                </div>
+                            {% endif %}
+
+                            <div class="level-item">
+                                <button type="submit" name="close" value="close" class="button is-danger">Fermer le ticket</button>
+                            </div>
+                        {% endif %}
+
                     </div>
                 </nav>
             </form>

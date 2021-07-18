@@ -53,9 +53,10 @@ class TicketCrudController extends AbstractController
     /**
      * @Route("/open", name="ticket_crud_open", methods={"GET"})
      */
-    public function open(TicketRepository $ticketRepository): Response
+    public function open(TicketRepository $ticketRepository, TicketStatusRepository $ticketStatusRepository): Response
     {
-        $ticketOpen = $ticketRepository->findBy(['status' => 'open']);
+        $statusOpen =  $ticketStatusRepository->findOneBy(['name' => 'open']);
+        $ticketOpen = $ticketRepository->findBy(['status' => $statusOpen]);
         return $this->render('ticket_crud/index.html.twig', [
             'tickets' => $ticketOpen,
             'filtre' => false,
@@ -241,6 +242,7 @@ class TicketCrudController extends AbstractController
         $comment = $request->request->get('comment');
         $commentSent = $request->request->get('commentSent');
         $wait = $request->request->get('wait');
+        $unwait = $request->request->get('unwait');
         $close = $request->request->get('close');
 
         //Vérification qu'un commentaire ai bien été écris
@@ -263,25 +265,35 @@ class TicketCrudController extends AbstractController
             }
 
             if ($wait) {
-                $ticketStatus = $ticketStatusRepository->findOneBy(['name' => 'waiting']);
+                $ticketStatusWaiting = $ticketStatusRepository->findOneBy(['name' => 'waiting']);
                 $ticket->addMessage($ticketMessage);
-                $ticket->setStatus($ticketStatus);
+                $ticket->setStatus($ticketStatusWaiting);
+                $entityManager->persist($ticket);
+                $entityManager->persist($ticketMessage);
+                $entityManager->flush();
+            }
+
+            if ($unwait) {
+                $ticketStatusOpen = $ticketStatusRepository->findOneBy(['name' => 'open']);
+                $ticket->addMessage($ticketMessage);
+                $ticket->setStatus($ticketStatusOpen);
                 $entityManager->persist($ticket);
                 $entityManager->persist($ticketMessage);
                 $entityManager->flush();
             }
 
             if ($close) {
-                $ticketStatus = $ticketStatusRepository->findOneBy(['name' => 'closed']);
+                $ticketStatusClosed = $ticketStatusRepository->findOneBy(['name' => 'closed']);
                 $ticket->addMessage($ticketMessage);
-                $ticket->setStatus($ticketStatus);
+                $ticket->setStatus($ticketStatusClosed);
                 $entityManager->persist($ticket);
                 $entityManager->persist($ticketMessage);
                 $entityManager->flush();
             }
         }
         return $this->render('ticket_crud/work.html.twig',[
-            'ticket' => $ticket
+            'ticket' => $ticket,
+            'wait' => $wait
         ]);
     }
 
