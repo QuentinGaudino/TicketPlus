@@ -25,6 +25,7 @@ class TicketRepository extends ServiceEntityRepository
 
     }
 
+
     /**
     * @return Ticket[] Returns an array of Ticket objects
     */
@@ -32,72 +33,71 @@ class TicketRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('t');
 
+        $status = null;
+        $type = null;
+        $beginDate = null;
+        $endDate = null;
+        $search = null;
+
+        
         //Vérification de l'existance ou non de clées dans le tableau $get
         if (array_key_exists('status', $get)) {
             $status = $this->statusRepo->findOneBy(['name' => $get['status']]);
-        }else{
-            $status = null;
-        }
 
+            if ($status && $status != 'allStatus') {
+                $qb->andWhere('t.status = :status')
+                ->setParameter('status', $status);
+            }
+        }
         if (array_key_exists('type', $get)) {
             $type = $this->typeRepo->findOneBy(['name' => $get['type']]);
-        }else{
-            $type = null;
+
+            if ($type && $type != 'allType') {
+                $qb->andWhere('t.type = :type')
+                ->setParameter('type', $type);
+            }
         }
 
         if (array_key_exists('beginDate', $get)) {
             $beginDate = $get['beginDate'];
-        }else{
-            $beginDate = null;
+
+            if ($beginDate) {
+                $qb->andWhere('t.Creation_date >= :beginDate')
+                ->setParameter('beginDate', $beginDate);
+            }
         }
 
         if (array_key_exists('endDate', $get)) {
             $endDate = $get['endDate'];
-        }else{
-            $endDate = null;
+
+            if ($endDate) {
+                $qb->andWhere('t.Creation_date <= :endDate')
+                ->setParameter('endDate', $endDate);
+            }
         }
 
         if (array_key_exists('search', $get)) {
             $search = $get['search'];
-        }else{
-            $search = null;
+
+            if ($search) {
+                $preResults = $qb->getQuery()->getResult();
+                $results = [];
+                foreach ($preResults as $ticket) {
+                    if (stristr($ticket->getName(), $search) || stristr($ticket->getDescription(), $search)) {
+                        $results[] = $ticket;
+                    }
+                }
+                return $results;
+            }
         }
 
-        if ($status && $status != 'allStatus') {
-            $qb->andWhere('t.status = :status')
-            ->setParameter('status', $status);
-        }
-
-        if ($type && $type != 'allType') {
-            $qb->andWhere('t.type = :type')
-            ->setParameter('type', $type);
-        }
-
-        if ($beginDate) {
-            $qb->andWhere('t.Creation_date >= :beginDate')
-            ->setParameter('beginDate', $beginDate);
-        }
-
-        if ($endDate) {
-            $qb->andWhere('t.Creation_date <= :endDate')
-            ->setParameter('endDate', $endDate);
-        }
 
         if ($user) {
             $qb->andWhere('t.author = :author')
             ->setParameter('author', $user);
         }
 
-        if ($search) {
-            $preResults = $qb->getQuery()->getResult();
-            $results = [];
-            foreach ($preResults as $ticket) {
-                if (stristr($ticket->getName(), $search) || stristr($ticket->getDescription(), $search)) {
-                    $results[] = $ticket;
-                }
-            }
-            return $results;
-        }
+
         return $qb
             ->getQuery()
             ->getResult()
